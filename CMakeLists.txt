@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 3.1.3)
 # Set project name, version and laguages here. (change as needed)
 # Version numbers are available by including "exampleConfig.h" in 
 # the source. See exampleConfig.h.in for some more details.
-project(CPP_BOILERPLATE VERSION 1.2.3.4 LANGUAGES C CXX)
+project(EDNL VERSION 1.2.3.4 LANGUAGES CXX)
 
 
 # Include stuff. No change needed.
@@ -91,23 +91,7 @@ add_test(unit_tests ${PROJECT_BINARY_DIR}/${TEST_MAIN})
 # --------------------------------------------------------------------------------
 # If CMake aborts due to missing dependencies for code coverage 
 # (gcov, lcov, genhtml and supported compiler), comment this line.
-include(CodeCoverage)
-
-# --------------------------------------------------------------------------------
-#                         Documentation (no change needed).
-# --------------------------------------------------------------------------------
-# Add a make target 'doc' to generate API documentation with Doxygen.
-# You should set options to your liking in the file 'Doxyfile.in'.
-find_package(Doxygen)
-if(DOXYGEN_FOUND)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
-    add_custom_target(doc 
-        ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile &> doxygen.log
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-        COMMENT "${BoldMagenta}Generating API documentation with Doxygen (open ./html/index.html to view).${ColourReset}" VERBATIM
-        )
-endif(DOXYGEN_FOUND)
-
+#include(CodeCoverage)
 
 # --------------------------------------------------------------------------------
 #                         Google Test (no change needed).
