@@ -4,5 +4,11 @@ trigger:
 pool:
   vmImage: 'xcode9-macos10.13'
 steps:
-- script: brew install ninja
-- script: mkdir build && cd build && cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && ninja main.x && ./main.x
+- script: brew install ninja lcov
+  displayName: Installing ninja build system
+- script: mkdir build && cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
+- script: ninja -C build unit_tests.x
+  displayName: Unit Testing
+- script: mkdir build && cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Coverage
+- script: bash <(curl -s https://codecov.io/bash) -f build/coverage_out.info.cleaned || echo "Codecov did not collect coverage reports"
+  displayName: Coverage

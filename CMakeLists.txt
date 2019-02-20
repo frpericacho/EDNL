@@ -91,7 +91,7 @@ add_test(unit_tests ${PROJECT_BINARY_DIR}/${TEST_MAIN})
 # --------------------------------------------------------------------------------
 # If CMake aborts due to missing dependencies for code coverage 
 # (gcov, lcov, genhtml and supported compiler), comment this line.
-#include(CodeCoverage)
+include(CodeCoverage)
 
 # --------------------------------------------------------------------------------
 #                         Google Test (no change needed).
