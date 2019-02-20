@@ -1,1 +1,1 @@
-# EDNL
+# [![Build Status](https://dev.azure.com/rodrigosanabria22/krosf/_apis/build/status/krosf-university.EDNL?branchName=master)](https://dev.azure.com/rodrigosanabria22/krosf/_build/latest?definitionId=18&branchName=master) EDNL
