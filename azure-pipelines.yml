@@ -5,4 +5,4 @@ pool:
   vmImage: 'xcode9-macos10.13'
 steps:
 - script: brew install ninja
-- script: mkdir build && cd build && cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug  && make && ./main.x
+- script: mkdir build && cd build && cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && ninja main.x && ./main.x
