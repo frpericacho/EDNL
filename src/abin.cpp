@@ -1,8 +1,8 @@
-#include "abin.hpp"
 #include <algorithm>
 #include <cassert>
+#include "abin.hpp"
 template <typename T>
-inline Vectorial::Abin<T>::Abin(int max) : max_size{max}, size{0}, nodos{new celda[max]} {}
+Vectorial::Abin<T>::Abin(int max) : max_size{max}, size{0}, nodos{new celda[max]} {}
 
 template <typename T>
 Vectorial::Abin<T>::Abin(const Abin<T> &a) : nodos{new celda[a.max_size]}, max_size{a.max_size}, size{a.size}

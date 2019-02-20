@@ -1,5 +1,5 @@
-#include "abin.hpp"
 #include <iostream>
+#include "abin.hpp"
 using namespace Vectorial;
 int main()
 {

@@ -2,7 +2,9 @@
 #define ABIN_VEC_HPP
 namespace Vectorial
 {
+
 const int NODO_NULO = -1;
+
 template <typename T>
 class Abin
 {
@@ -27,6 +29,8 @@ public:
   ~Abin() { delete[] nodos; }
 
 private:
+  int max_size;
+  int size;
   class celda
   {
   public:
@@ -36,8 +40,6 @@ private:
     celda(const celda &) = default;
     celda &operator=(const celda &) = default;
   };
-  int max_size;
-  int size;
   celda *nodos;
 };
 } // namespace Vectorial
