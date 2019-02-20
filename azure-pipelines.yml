@@ -2,7 +2,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'Ubuntu-16.04'
-
+  vmImage: 'xcode9-macos10.13'
 steps:
-- tasks: CMake@1
+- script: brew install cmake ninja
+- script: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug -DNinja && make && ./main.x
