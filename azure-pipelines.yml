@@ -4,5 +4,5 @@ trigger:
 pool:
   vmImage: 'xcode9-macos10.13'
 steps:
-- script: brew install cmake ninja
-- script: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug -DNinja && make && ./main.x
+- script: brew install ninja
+- script: mkdir build && cd build && cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug  && make && ./main.x
