@@ -2,6 +2,8 @@
 #define ABIN_VEC_HPP
 #include <algorithm>
 #include <cassert>
+#include <cstdio>
+#include <iostream>
 namespace Vectorial {
 template <typename T> class Abin {
 public:
@@ -24,6 +26,8 @@ public:
   nodo hijoIzquierdo(nodo n) const;
   nodo hijoDerecho(nodo n) const;
   ~Abin() { delete[] nodos; }
+  template <typename U>
+  friend std::ostream &operator<<(std::ostream &os, const Abin<U> &a);
 
 private:
   int max_size;
@@ -37,6 +41,7 @@ private:
     nodo padre, h_izq, h_dch;
   };
   celda *nodos;
+  int printAbin(nodo n, bool isLeft, int offset, int depth, char[20][255]) const;
 };
 
 template <typename T>
@@ -153,6 +158,53 @@ template <typename T> Abin<T> &Abin<T>::operator=(const Abin<T> &a) {
     std::copy(a.nodos, a.nodos + (a.size - 1), nodos);
   }
   return *this;
+}
+
+template <typename T>
+int Abin<T>::printAbin(nodo n, bool isLeft, int offset, int depth,
+                       char s[20][255]) const {
+  char b[20];
+  int width{5};
+  if (n == -1) {
+    return 0;
+  }
+  sprintf(b, "(%03d)", nodos[n].elemento);
+  int left = printAbin(nodos[n].h_izq, true, offset, depth + 1, s);
+  int right =
+      printAbin(nodos[n].h_dch, false, offset + left + width, depth + 1, s);
+  for (int i = 0; i < width; i++) {
+    s[2 * depth][offset + left + i] = b[i];
+  }
+  if (depth && isLeft) {
+    for (int i = 0; i < width + right; i++) {
+      s[2 * depth - 1][offset + left + width / 2 + i] = '-';
+    }
+
+    s[2 * depth - 1][offset + left + width / 2] = '+';
+    s[2 * depth - 1][offset + left + width + right + width / 2] = '+';
+
+  } else if (depth && !isLeft) {
+
+    for (int i = 0; i < left + width; i++) {
+      s[2 * depth - 1][offset - width / 2 + i] = '-';
+    }
+    s[2 * depth - 1][offset + left + width / 2] = '+';
+    s[2 * depth - 1][offset - width / 2 - 1] = '+';
+  }
+  return left + width + right;
+}
+
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const Abin<T> &a) {
+  char s[20][255];
+  for (int i = 0; i < 20; i++) {
+    sprintf(s[i], "%80s", " ");
+  }
+  a.printAbin(0, 0, 0, 0, s);
+  for (int i = 0; i < 20; i++) {
+    os << s[i] << std::endl;
+  }
+  return os;
 }
 } // namespace Vectorial
 #endif
