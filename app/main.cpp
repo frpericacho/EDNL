@@ -1,17 +1,15 @@
 #include "abin.hpp"
-#include "abin_E-S.h"
-#include "example.hpp"
+#include "ioabin.hpp"
 #include <iostream>
 
 using namespace std;
+using namespace Enlazada;
 
 int main() {
   Abin<int> A;
-  A.insertarRaiz(5);
-  A.insertarHijoIzquierdo(A.raiz(), 20);
-  A.insertarHijoDerecho(A.raiz(), 21);
+  A.insertarRaizB(5);
+  A.insertarHijoIzqdoB(A.raizB(), 20);
+  A.insertarHijoDrchoB(A.raizB(), 21);
+  cout << A.altura(A.raizB()) << endl;
   std::cout << A << std::endl;
-  Dummy d = Dummy();
-
-  return d.doSomething() ? 0 : -1;
 }
