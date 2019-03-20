@@ -85,9 +85,7 @@ int fdesequilibrio(typename Abin<T>::Nodo n, const Abin<T> &A)
     if (n == Abin<T>::NODO_NULO)
         return 0;
     else
-    {
         return std::max({abs(altura(A.hijoIzqdoB()) - altura(A.hijoDrchoB())), fdesequilibrio(A.hijoIzqdoB(), A), fdesequilibrio(A.hijoDrchoB(), A)});
-    }
 }
 
 template <typename T>
@@ -95,23 +93,23 @@ int busca(const Abin<T> &A)
 {
     if (A.arbolVacioB())
         return 0;
-    else{
+    else
         return buscaProf(A.raizB(), A);    
-    }
 }
 
 template <typename T>
 int buscaProf(typename Abin<T>::Nodo n, const Abin<T> &A)
 {
     if(A.altura(A.raizB()) - 1 == A.profundidad(n)){
-        return (A.hijoIzqdoB(n) == Abin<T>::NODO_NULO && A.hijoDrchoB(n) == Abin<T>::NODO_NULO) || (A.hijoIzqdoB(n) != Abin<T>::NODO_NULO && A.hijoDrchoB(n) != Abin<T>::NODO_NULO);
+        return (A.hijoIzqdoB(n) == Abin<T>::NODO_NULO && A.hijoDrchoB(n) == Abin<T>::NODO_NULO) || 
+        (A.hijoIzqdoB(n) != Abin<T>::NODO_NULO && A.hijoDrchoB(n) != Abin<T>::NODO_NULO);
     }
     else if(A.altura(A.hijoDrchoB(n)) > A.altura(A.hijoIzqdoB(n))){
         return buscaProf(A.hijoDrchoB(n), A);
     }else if(A.altura(A.hijoDrchoB(n)) < A.altura(A.hijoIzqdoB(n))){
         return buscaProf(A.hijoIzqdoB(n), A);
     }
-        return buscaProf(A.hijoDrchoB(n),A) && buscaProf(A.hijoIzqdoB(n),A);
+    return buscaProf(A.hijoDrchoB(n),A) && buscaProf(A.hijoIzqdoB(n),A);
 }
 
 } // namespace Enlazada

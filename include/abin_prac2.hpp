@@ -52,14 +52,14 @@ Abin<T> espejo(const Abin<T> &A)
 template <typename T>
 void fespejo(Abin<T> &B, typename Abin<T>::Nodo na, const Abin<T> &A, typename Abin<T>::Nodo nb)
 {
-    if (A.hijoIzqdoB() != Abin<T>::NODO_NULO)
+    if (A.hijoIzqdoB(na) != Abin<T>::NODO_NULO)
     {
-        B.insertarHijoDrchoB(nb, A.elemento(A.hijoIzqdoB()));
+        B.insertarHijoDrchoB(nb, A.elemento(A.hijoIzqdoB(na)));
         fespejo(B, B.hijoDrchoB(nb), A, A.hijoIzqdoB(na));
     }
-    else if (A.hijoDrchoB() != Abin<T>::NODO_NULO)
+    else if (A.hijoDrchoB(na) != Abin<T>::NODO_NULO)
     {
-        B.insertarHijoIzqdoB(nb, A.elemento(A.hijoDrchoB()));
+        B.insertarHijoIzqdoB(nb, A.elemento(A.hijoDrchoB(na)));
         fespejo(B, B.hijoIzqdoB(nb), A, A.hijoDrchoB(na));
     }
 }
@@ -90,6 +90,8 @@ double operacion(const Abin<Op> &A)
 {
     return foperacion(A.raizB(), A);
 }
+
+
 
 } // namespace Enlazada
 
