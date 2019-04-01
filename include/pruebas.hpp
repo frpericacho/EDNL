@@ -133,11 +133,83 @@ namespace Enlazada{
         }
     }
 
-    //EJERCICIOS DE INTERNET
+    //cuantos nodos tienen tres nietos
 
-    //comprobar que dos nodos son primos
-
+    template<typename T>
+    int nietos(const Abin<T> &A){
+        if(A.arbolVacioB())
+            return 0;
+        else
+            return fun_nietos(A.raizB(),A);
+    }
     
+    template<typename T>
+    int fun_nietos(typename Abin<T>::Nodo n, const Abin<T> &A){
+        if(n == Abin<T>::NODO_NULO)
+            return 0;
+        else if(A.hijoIzqdoB(n) != Abin<T>::NODO_NULO && A.hijoDrchoB(n) != Abin<T>::NODO_NULO)
+            if(A.hijoIzqdoB(A.hijoIzqdoB(n)) != Abin<T>::NODO_NULO && A.hijoDrchoB(A.hijoIzqdoB(n)) != Abin<T>::NODO_NULO && (!(A.hijoDrchoB(A.hijoDrchoB(n)) != Abin<T>::NODO_NULO) != !(A.hijoIzqdoB(A.hijoDrchoB(n)) != Abin<T>::NODO_NULO)))
+                return 1 + fun_nietos(A.hijoDrchoB(n),A) + fun_nietos(A.hijoIzqdoB(n),A);
+            else if(A.hijoDrchoB(A.hijoDrchoB(n)) != Abin<T>::NODO_NULO && A.hijoIzqdoB(A.hijoDrchoB(n)) != Abin<T>::NODO_NULO && (!(A.hijoIzqdoB(A.hijoIzqdoB(n)) != Abin<T>::NODO_NULO) != !(A.hijoDrchoB(A.hijoIzqdoB(n)) != Abin<T>::NODO_NULO)))
+                return 1 + fun_nietos(A.hijoDrchoB(n),A) + fun_nietos(A.hijoIzqdoB(n),A);
+        return fun_nietos(A.hijoDrchoB(n),A) + fun_nietos(A.hijoIzqdoB(n),A);
+    }
+
+    //dado dos nodos comprobar que son primos
+    template<typename T>
+    bool primo(typename Abin<T>::Nodo na, typename Abin<T>::Nodo nb, const Abin<T> &A){
+        if(A.arbolVacioB())
+            return false;
+        else
+            return fun_primo(na,nb,A);
+    }
+
+    template<typename T>
+    bool fun_primo(typename Abin<T>::Nodo na, typename Abin<T>::Nodo nb, const Abin<T> &A){
+        if(na == Abin<T>::NODO_NULO || nb == Abin<T>::NODO_NULO)
+            return false;
+        else if(A.padreB(na) == A.padreB(nb))
+            return false;
+        else if(A.padreB(A.padreB(na)) == A.padreB(A.padreB(nb)) == Abin<T>::NODO_NULO)
+            return false;
+        else if(A.padreB(A.padreB(na)) == A.padreB(A.padreB(nb)))
+            return true;
+        return false;
+    }
+
+    /*6.- Se dice de nodo rebelde aquel cuyas ideas son diferentes a la de la mayoría de sus ancestros.
+    Dado un árbol binario cualquiera calcular el número de nodos rebeldes de dicho árbol.
+    Ejemplo si el nodo vale "1" y tiene tres ancestros que valen "1" y seis que valen "0", es rebelde.
+    */
+    template<typename T>
+    int rebeldes(const Abin<T> &A){
+        if(A.arbolVacioB())
+            return 0;
+        else
+            return fun_rebeldes(A.raizB(),A);
+    }
+
+    template<typename T>
+    int fun_rebeldes(typename Abin<T>::Nodo n, const Abin<T> &A){
+        if(n == Abin<T>::NODO_NULO)
+            return 0;
+        if(comprueba(n,A.elemento(n),A))
+            return 1 + fun_rebeldes(A.hijoIzqdoB(n),A) + fun_rebeldes(A.hijoDrchoB(n),A);
+        return fun_rebeldes(A.hijoIzqdoB(n),A) + fun_rebeldes(A.hijoDrchoB(n),A);
+    }
+
+    template<typename T>
+    bool comprueba(typename Abin<T>::Nodo n, T elemento, const Abin<T> &A){
+        int tipo1=0, tipo2=0;
+        while(n != Abin<T>::NODO_NULO){
+            if(A.elemento(n) == elemento)
+                tipo1++;
+            else
+                tipo2++;
+            n = A.padreB(n);
+        }
+        return tipo1 < tipo2;
+    }
 
 }
 

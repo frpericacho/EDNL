@@ -10,22 +10,23 @@ using namespace Enlazada;
 
 int main() {
   Abin<int> A,B;
-  A.insertarRaizB(5);
-  A.insertarHijoIzqdoB(A.raizB(), 20);
-  A.insertarHijoDrchoB(A.raizB(), 21);
-  A.insertarHijoDrchoB(A.hijoIzqdoB(A.raizB()),17);
-  A.insertarHijoDrchoB(A.hijoDrchoB(A.raizB()),15);
-  A.insertarHijoIzqdoB(A.hijoDrchoB(A.raizB()),16);
-  A.insertarHijoIzqdoB(A.hijoDrchoB(A.hijoDrchoB(A.raizB())),10);
-  
-  B.insertarRaizB(5);
-  B.insertarHijoIzqdoB(B.raizB(), 20);
-  B.insertarHijoDrchoB(B.raizB(), 21);
-  B.insertarHijoDrchoB(B.hijoDrchoB(B.raizB()),10);
+  A.insertarRaizB(1);
+  A.insertarHijoIzqdoB(A.raizB(), 0);
+  A.insertarHijoDrchoB(A.raizB(), 1);
+  A.insertarHijoDrchoB(A.hijoIzqdoB(A.raizB()),0);
+  //A.insertarHijoIzqdoB(A.hijoIzqdoB(A.raizB()),17);
+  A.insertarHijoDrchoB(A.hijoDrchoB(A.raizB()),1);
+  A.insertarHijoIzqdoB(A.hijoDrchoB(A.raizB()),0);
+  A.insertarHijoIzqdoB(A.hijoDrchoB(A.hijoDrchoB(A.raizB())),1);
+  A.insertarHijoDrchoB(A.hijoDrchoB(A.hijoDrchoB(A.raizB())),1);
+  A.insertarHijoDrchoB(A.hijoIzqdoB(A.hijoDrchoB(A.raizB())),0);
   //B.insertarHijoIzqdoB(B.hijoDrchoB(B.raizB()),10);
 //  cout << A.altura(A.raizB()) << endl;
 //  cout << busca(A) << endl;
   std::cout << A << std::endl;
+  std::cout << rebeldes(A) << std::endl;
+  //std::cout << primo(A.hijoIzqdoB(A.hijoDrchoB(A.raizB())),A.hijoDrchoB(A.hijoDrchoB(A.raizB())),A) << std::endl;
+  //std::cout << nietos(A) << std::endl;
   //std::cout << rama(A) << std::endl;
   //rama(A);
 }
