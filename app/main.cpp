@@ -1,5 +1,7 @@
 #include "abin.hpp"
 #include "ioabin.hpp"
+#include "agen.hpp"
+#include "agen_prac2.hpp"
 //#include "abin_prac2.hpp"
 #include "pruebas.hpp"
 #include "OP.hpp"
@@ -9,6 +11,7 @@ using namespace std;
 using namespace Enlazada;
 
 int main() {
+  /*
   Abin<int> A,B;
   A.insertarRaizB(1);
   A.insertarHijoIzqdoB(A.raizB(), 0);
@@ -29,4 +32,11 @@ int main() {
   //std::cout << nietos(A) << std::endl;
   //std::cout << rama(A) << std::endl;
   //rama(A);
+  */
+  Agen<int> A;
+  A.insertarRaiz(5);
+  A.insertarHijoIzqdo(A.raiz(),1);
+  A.insertarHijoIzqdo(A.raiz(),2);
+
+  imprimirAgen(A);
 }
