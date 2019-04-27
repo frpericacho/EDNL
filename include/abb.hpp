@@ -1,10 +1,11 @@
 #ifndef ABB_H
 #define ABB_H
 #include <cassert>
+#include "abin.hpp"
 template <typename T>
 class Abb
 {
-  public:
+public:
     Abb(); // constructor
     const Abb &buscar(const T &e) const;
     void insertar(const T &e);
@@ -15,9 +16,11 @@ class Abb
     const Abb &drcho() const;
     Abb(const Abb &A);            // ctor. de copia
     Abb &operator=(const Abb &A); // asig. árboles
+    operator Enlazada::Abin<T>() const;
+    
     ~Abb();
 
-  private:
+private:
     struct arbol
     {
         T elto;
@@ -168,6 +171,30 @@ void Abb<T>::copiar(const Abb<T> &A) // Copia el árbol a en *this
         r = new arbol(A.r->elto); // copiar raíz
         r->izq.copiar(A.r->izq);  // copiar subárbol izqdo.
         r->der.copiar(A.r->der);  // copiar subárbol drcho.
+    }
+}
+
+template <typename T>
+Abb<T>::operator Enlazada::Abin<T>() const{
+    if(!vacio()){
+        Abin<T> n;
+        n.insertarRaizB(elemento());
+        copiar(n , this, n.raiz());
+        return n;
+    }
+}
+
+template<typename T>
+void copiar(Enlazada::Abin<T> &abin, Abb<T> &abb, typename Enlazada::Abin<T>::nodo n){
+    if(!abb.vacio()){
+        if(!abb.izqdo().vacio()){
+            abin.insertarHijoIzqdoB(n, abb.izqdo().elemento());
+            copiar(abin , abb.izqdo(), abin.hijoIzqdoB(n));
+        }
+        if(!abb.drcho().vacio()){
+            abin.insertarHijoDrchoB(n, abb.drcho().elemento());
+            copiar(abin, abb.drcho(), abin.hijoDrchoB(n));
+        }
     }
 }
 

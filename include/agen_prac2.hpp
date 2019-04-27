@@ -66,24 +66,27 @@ int profundidad(const Agen<T> &A, typename Agen<T>::nodo n){
 implementa un subprograma que realice la poda de A a partir de x.
 Se asume que no hay elementos repetidos en A*/
 
-void llamada(Agen<int> &A, int aux){
-    if(!A.arbolVacio()){
-        poda(A, A.raiz(), aux);
-    }
-}
+// void llamada(Agen<int> &A, int aux){
+//     if(!A.arbolVacio()){
+//         poda(A, A.raiz(), aux);
+//     }
+// }
 
-void poda(Agen<int> &A, typename Agen<int>::nodo n, int aux){
-    if(n != Agen<int>::NODO_NULO){
-        if(A.elemento(n) == aux)
-            A.destruirNodos(n);
-        else{
-            n = A.hijoIzqdo(n);
-            while(n != Agen<int>::NODO_NULO){
-                poda(A,n,aux);
-                n = A.hermDrcho(n);
-            }
-        }
-    }
-}
+// void poda(Agen<int> &A, Agen<int>::Nodo n, int aux){
+//     if(n != Agen<int>::NODO_NULO){
+//         if(A.elemento(n) == aux)
+//             A.destruirNodos(n);
+//         else{
+//             n = A.hijoIzqdo(n);
+//             while(n != Agen<int>::NODO_NULO){
+//                 poda(A,n,aux);
+//                 n = A.hijoIzqdo(n);
+//                 A.eliminarHijoIzqdo(n);
+//             }
+//         }
+//     }
+// }
+
+
 
 #endif

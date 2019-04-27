@@ -6,6 +6,7 @@
 #include "pruebas.hpp"
 #include "OP.hpp"
 #include <iostream>
+#include "ioagen.hpp"
 
 using namespace std;
 using namespace Enlazada;
@@ -38,5 +39,5 @@ int main() {
   A.insertarHijoIzqdo(A.raiz(),1);
   A.insertarHijoIzqdo(A.raiz(),2);
 
-  imprimirAgen(A);
+  std::cout << A;
 }
