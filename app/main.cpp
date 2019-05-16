@@ -7,6 +7,7 @@
 #include "OP.hpp"
 #include <iostream>
 #include "ioagen.hpp"
+#include "grafos/grf_prac1.hpp"
 
 using namespace std;
 using namespace Enlazada;
@@ -34,10 +35,15 @@ int main() {
   //std::cout << rama(A) << std::endl;
   //rama(A);
   */
+ /*
   Agen<int> A;
   A.insertarRaiz(5);
   A.insertarHijoIzqdo(A.raiz(),1);
   A.insertarHijoIzqdo(A.raiz(),2);
 
   std::cout << A;
+  */
+
+
+  
 }
