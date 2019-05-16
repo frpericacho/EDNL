@@ -20,14 +20,17 @@ vector<T> DijkstraInv(const GrafoP<T> &G, typename GrafoP<T>::vertice destino, v
     vertice v, w;
     const size_t n = G.numVert();
     vector<bool> S(n, false); // Conjunto de vértices vacío.
-    vector<tCoste> D;         // Costes mínimos desde origen.
-    // Iniciar D y P con caminos directos desde el vértice origen.
-    D = G[origen];
-    D[origen] = 0; // Coste origen-origen es 0.
-    P = vector<vertice>(n, origen);
-    S[origen] = true; // Incluir vértice origen en S.
+    vector<tCoste> D;         // Costes mínimos desde destino.
+    // Iniciar D y P con caminos directos desde el vértice destino.
+    for(int i = 0; i < n - 1; i++){
+        D[i] = G[i][destino];
+    }
+    //D = G[destino];
+    D[destino] = 0; // Coste destino-destino es 0.
+    P = vector<vertice>(n, destino);
+    S[destino] = true; // Incluir vértice destino en S.
     for (size_t i = 1; i <= n - 2; i++)
-    { // Localizar vértice w no incluido en S con menor coste desde origen
+    { // Localizar vértice w no incluido en S con menor coste desde destino
         tCoste costeMin = GrafoP<tCoste>::INFINITO;
         for (v = 0; v <= n - 1; v++)
             if (!S[v] && D[v] <= costeMin)
