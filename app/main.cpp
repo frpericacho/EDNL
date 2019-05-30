@@ -1,12 +1,7 @@
-#include "abin.hpp"
-#include "ioabin.hpp"
-#include "agen.hpp"
-#include "agen_prac2.hpp"
-//#include "abin_prac2.hpp"
 #include "pruebas.hpp"
 #include "OP.hpp"
 #include <iostream>
-#include "ioagen.hpp"
+#include "io.hpp"
 #include "grafos/grf_prac1.hpp"
 
 using namespace std;
@@ -44,6 +39,6 @@ int main() {
   std::cout << A;
   */
 
-
-  
+  GrafoP<short> G("files/matriz.txt");
+  std::cout << pseudocentro(G);
 }
