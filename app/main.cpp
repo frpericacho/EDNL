@@ -1,11 +1,8 @@
-#include "pruebas.hpp"
-#include "OP.hpp"
 #include <iostream>
-#include "io.hpp"
+#include "grafos/io.hpp"
 #include "grafos/grf_prac1.hpp"
 
-using namespace std;
-using namespace Enlazada;
+using namespace grafos::pmc;
 
 int main() {
   /*
@@ -40,5 +37,9 @@ int main() {
   */
 
   GrafoP<short> G("files/matriz.txt");
-  std::cout << pseudocentro(G);
+  bool aux = subvencion(G);
+  if(aux)
+    std::cout << "aciclico";
+  else
+    std::cout << "nope";
 }

@@ -126,3 +126,6 @@ include_directories("${PROJECT_BINARY_DIR}")
 
 # Ask CMake to output a compile_commands.json file for use with things like Vim YCM.
 set( CMAKE_EXPORT_COMPILE_COMMANDS 1 )
+
+file(GLOB FILES "${PROJECT_SOURCE_DIR}/files/*.txt")
+file(COPY ${FILES} DESTINATION "${PROJECT_BINARY_DIR}/files/")
