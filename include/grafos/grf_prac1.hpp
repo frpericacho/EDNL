@@ -177,8 +177,6 @@ T zuelandia(const GrafoP<T> &G, grafos::pmc::alg::vertice<T> cap,
   vector<T> dis = grafos::pmc::alg::Dijkstra(G, cap, P);
   vector<T> disin = grafos::pmc::alg::DijkstraInv(G, cap, P);
 
-  
-
   return A;
 }
 

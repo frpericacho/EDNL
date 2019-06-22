@@ -1,6 +1,8 @@
 #ifndef GRAFOS_ALG_HPP
 #define GRAFOS_ALG_HPP
+#include <algorithm>
 #include <cassert>
+#include <tuple>
 #include "grafos/apo.hpp"
 #include "grafos/cola.hpp"
 #include "grafos/matriz.hpp"
@@ -20,13 +22,99 @@ using tCamino = typename GrafoP<T>::tCamino;
 template <typename T>
 using arista = typename GrafoP<T>::arista;
 
+template <typename C>
+std::tuple<size_t, C> min_with_index(const vector<C>& v) {
+  auto index = std::min_element(v.begin(), v.end());
+  return {std::distance(v.begin(), index), *index};
+}
+
+template <typename C>
+std::tuple<size_t, C> max_with_index(const vector<C>& v) {
+  auto index = std::max_element(v.begin(), v.end());
+  return {std::distance(v.begin(), index), *index};
+}
+
+template <typename T>
+GrafoP<T> BigGrafo(const vector<GrafoP<T>>& graphs,
+                   const vector<vector<T>>& costes) {
+  const size_t m{graphs.size()}, n{graphs[0].numVert()};
+  GrafoP<T> BG(m * n);
+  vertice<T> v, w, bgv, bgw;
+  for (size_t i = 0, g = 0, d = 0; i < m; ++i, g += (m - i), d = 0) {
+    for (v = 0; v < n; ++v) {
+      bgv = v + n * i;
+      for (w = v; w < n; ++w) {
+        bgw = w + n * i;
+        BG[bgv][bgw] = BG[bgw][bgv] = graphs[i][v][w];
+        if (v == w && i < m - 1) {
+          for (size_t j = n * (i + 1), k = g; j < m * n; j += n, ++k) {
+            BG[bgv][j + w] = BG[j + w][bgv] = costes[k][d];
+          }
+          ++d;
+        }
+      }
+    }
+  }
+  return BG;
+}
+
+template <typename T>
+GrafoP<T> BigGrafo(const vector<GrafoP<T>>& graphs,
+                   const vector<vector<T>>& costes_sup,
+                   const vector<vector<T>>& costes_inf) {
+  const size_t m{graphs.size()}, n{graphs[0].numVert()};
+  GrafoP<T> BG(m * n);
+  vertice<T> v, w, bgv, bgw;
+  for (size_t i = 0, g = 0, d = 0; i < m; ++i, g += (m - i), d = 0) {
+    for (v = 0; v < n; ++v) {
+      bgv = v + n * i;
+      for (w = v; w < n; ++w) {
+        bgw = w + n * i;
+        BG[bgv][bgw] = BG[bgw][bgv] = graphs[i][v][w];
+        if (v == w && i < m - 1) {
+          for (size_t j = (n * (i + 1)) + w, k = g; j < m * n; j += n, ++k) {
+            BG[bgv][j] = costes_sup[k][d];
+            BG[j][bgv] = costes_inf[k][d];
+          }
+          ++d;
+        }
+      }
+    }
+  }
+  return BG;
+}
+
+template <typename T>
+GrafoP<T> BigGrafo(const vector<GrafoP<T>>& graphs, T coste) {
+  const size_t m{graphs.size()}, n{graphs[0].numVert()};
+  const size_t mn{m * n};
+  GrafoP<T> BG(mn);
+  vertice<T> v, w, bgv, bgw;
+  for (size_t i = 0; i < m; ++i) {
+    for (v = 0; v < n; ++v) {
+      bgv = v + n * i;
+      for (w = v; w < n; ++w) {
+        bgw = w + n * i;
+        BG[bgw][bgv] = BG[bgv][bgw] = graphs[i][v][w];
+        if (v == w && i < m - 1) {
+          for (size_t j = (n * (i + 1)) + w; j < mn; j += n) {
+            BG[bgv][j] = BG[j][bgv] = coste;
+          }
+        }
+      }
+    }
+  }
+  return BG;
+}
+
 template <typename T>
 /**
  * Suma de costes. Devuelve GrafoP<tCoste>::INFINITO si alguno de los
  * dos parámetros vale GrafoP<tCoste>::INFINITO.
  */
-T suma(T x, T y) {
-  const T INFINITO = GrafoP<T>::INFINITO;
+T suma(T x, T y, bool signedinf = false) {
+  const T INFINITO =
+      ((signedinf) ? GrafoP<T>::INFINITO * -1 : GrafoP<T>::INFINITO);
   if (x == INFINITO || y == INFINITO)
     return INFINITO;
   else
@@ -79,35 +167,14 @@ template <typename tCoste>
  */
 vector<tCoste> DijkstraInv(const GrafoP<tCoste>& G, vertice<tCoste> destino,
                            vector<vertice<tCoste>>& P) {
-  vertice<tCoste> v, w;
-  const std::size_t n = G.numVert();
-  vector<tCoste> D(n);
-  vector<bool> S(n, false);
-  for (vertice<tCoste> i = 0; i < n; ++i) {
-    D[i] = G[i][destino];
-  }
-  D[destino] = 0;
-  S[destino] = true;
-  P = vector<vertice<tCoste>>(n, destino);
-  for (size_t i = 1; i < n - 2; ++i) {
-    tCoste min = GrafoP<tCoste>::INFINITO;
-    for (v = 0; v < n; ++v) {
-      if (!S[v] && min >= D[v]) {
-        min = D[v];
-        w = v;
-      }
-    }
-    S[w] = true;
-    for (v = 0; v < n; ++v) {
-      if (!S[v]) {
-        if (tCoste coste = suma(G[v][w], D[w]); coste < D[v]) {
-          D[v] = coste;
-          P[v] = w;
-        }
-      }
+  GrafoP<tCoste> Gt{G};
+  const size_t n{G.numVert()};
+  for (vertice<tCoste> v = 0; v < n; ++v) {
+    for (vertice<tCoste> w = 0; w < n; ++w) {
+      Gt[w][v] = G[v][w];
     }
   }
-  return D;
+  return Dijkstra(Gt, destino, P);
 }
 
 template <typename T>
@@ -115,24 +182,54 @@ template <typename T>
  * Devuelve el camino de coste mínimo entre los vértices orig  y v
  * a partir de un vector P obtenido mediante la función Dijkstra().
  */
-tCamino<T> camino(vertice<T> orig, vertice<T> v, const vector<vertice<T>>& P,
-                  bool inv = false) {
+tCamino<T> camino(vertice<T> orig, vertice<T> v, const vector<vertice<T>>& P) {
   tCamino<T> C;
-  if (inv) {
-    std::swap(orig, v);
-    C.insertar(v, C.fin());
-    do {
-      C.insertar(P[v], C.fin());
-      v = P[v];
-    } while (v != orig);
-  } else {
-    C.insertar(v, C.primera());
-    do {
-      C.insertar(P[v], C.primera());
-      v = P[v];
-    } while (v != orig);
-  }
+  C.insertar(v, C.primera());
+  do {
+    C.insertar(P[v], C.primera());
+    v = P[v];
+  } while (v != orig);
   return C;
+}
+
+template <typename T>
+tCamino<T> caminoInv(vertice<T> destino, vertice<T> v,
+                     const vector<vertice<T>>& P) {
+  tCamino<T> C;
+  C.insertar(v, C.fin());
+  do {
+    C.insertar(P[v], C.fin());
+    v = P[v];
+  } while (v != destino);
+  return C;
+}
+
+template <typename C>
+vertice<C> visitar(const GrafoP<C>& G, vector<bool>& visitado,
+                   vector<vertice<C>>& orden, vertice<C> index, vertice<C> u) {
+  if (visitado[u]) {
+    return index;
+  }
+  visitado[u] = true;
+  for (vertice<C> v = 0; v < G.numVert(); ++v) {
+    index = visitar(G, visitado, orden, index, v);
+  }
+  orden[index--] = u;
+  return index;
+}
+
+template <typename C>
+vector<vertice<C>> OrdenTopologico(const GrafoP<C>& G) {
+  const size_t n{G.numVert()};
+  vector<bool> visitado(n, false);
+  vector<vertice<C>> orden(n);
+  vertice<C> index{n - 1};
+  for (vertice<C> u = 0; u < n; ++u) {
+    if (!visitado[u]) {
+      index = visitar(G, visitado, orden, index, u);
+    }
+  }
+  return orden;
 }
 
 template <typename tCoste>
@@ -181,14 +278,16 @@ matriz<tCoste> FloydMax(const GrafoP<tCoste>& G, matriz<vertice<tCoste>>& P) {
     for (vertice<tCoste> j = 0; j < n; ++j) {
       if (G[i][j] != GrafoP<tCoste>::INFINITO) {
         P[i][j] = i;
+      } else {
+        A[i][j] *= -1;
       }
     }
   }
+
   for (vertice<tCoste> k = 0; k < n; ++k) {
     for (vertice<tCoste> i = 0; i < n; ++i) {
       for (vertice<tCoste> j = 0; j < n; ++j) {
-        if (tCoste ikj = suma(A[i][k], A[k][j]);
-            ikj != GrafoP<tCoste>::INFINITO && ikj > A[i][j]) {
+        if (tCoste ikj = suma(A[i][k], A[k][j], true); ikj > A[i][j]) {
           A[i][j] = ikj;
           P[i][j] = P[k][j];
         }

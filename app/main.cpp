@@ -1,8 +1,11 @@
 #include <iostream>
+#include "grafos/grf_prac2.hpp"
 #include "grafos/io.hpp"
-#include "grafos/grf_prac1.hpp"
 
 using namespace grafos::pmc;
+using namespace std;
+
+typedef unsigned tCoste;
 
 int main() {
   /*
@@ -22,24 +25,34 @@ int main() {
 //  cout << busca(A) << endl;
   std::cout << A << std::endl;
   std::cout << rebeldes(A) << std::endl;
-  //std::cout << primo(A.hijoIzqdoB(A.hijoDrchoB(A.raizB())),A.hijoDrchoB(A.hijoDrchoB(A.raizB())),A) << std::endl;
+  //std::cout <<
+primo(A.hijoIzqdoB(A.hijoDrchoB(A.raizB())),A.hijoDrchoB(A.hijoDrchoB(A.raizB())),A)
+<< std::endl;
   //std::cout << nietos(A) << std::endl;
   //std::cout << rama(A) << std::endl;
   //rama(A);
   */
- /*
-  Agen<int> A;
-  A.insertarRaiz(5);
-  A.insertarHijoIzqdo(A.raiz(),1);
-  A.insertarHijoIzqdo(A.raiz(),2);
+  /*
+   Agen<int> A;
+   A.insertarRaiz(5);
+   A.insertarHijoIzqdo(A.raiz(),1);
+   A.insertarHijoIzqdo(A.raiz(),2);
 
-  std::cout << A;
-  */
+   std::cout << A;
+   */
+  /*
+    GrafoP<short> G("files/matriz.txt");
+    bool aux = subvencion(G);
+    if(aux)
+      std::cout << "aciclico";
+    else
+      std::cout << "nope";
+      */
 
-  GrafoP<short> G("files/matriz.txt");
-  bool aux = subvencion(G);
-  if(aux)
-    std::cout << "aciclico";
-  else
-    std::cout << "nope";
+  GrafoP<short> G("files/aciclico.txt");
+
+  grafos::pmc::alg::arista<short> res = ejercicio1(G);
+
+  cout << "origen: " << res.orig << "\ndestino: " << res.dest << "\ncostes: " << res.coste <<  endl;
+
 }
